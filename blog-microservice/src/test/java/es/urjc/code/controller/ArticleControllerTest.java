@@ -93,11 +93,6 @@ public class ArticleControllerTest {
         result.andExpect(content().string("1"));
     }
 
-    @Test
-    public void shouldReturn201AndArticleComment() {
-            // TODO
-    }
-
     @WithMockUser(value = "admin")
     @Test
     public void shouldReturn200AndArticleUpdated() throws Exception {
