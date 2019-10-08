@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  blog:
+    image: fmblancokairos/blog-microservice
+    links: 
+      - "db"
+      - "swearing"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db/blog
+      SWEARING_MICROSERVICE_URL: swearing:8081
+    ports:
+      - "8443:8443"
+
+  swearing:
+    image: swearing
+    build: ./swearing-microservice
+
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: blog
+      MYSQL_USER: admin_blog
+      MYSQL_PASSWORD: admin_blog
