@@ -21,7 +21,7 @@ Also it has to be published in Docker Hub and easily deployed using Docker-Compo
 * Example JWT generation for user already in DB **admin**
 
 ```
-curl -X POST \
+curl -k -X POST \
   https://localhost:8443/login \
   -H 'Accept: */*' \
   -H 'Accept-Encoding: gzip, deflate' \
@@ -38,7 +38,7 @@ curl -X POST \
 ```
 * Example **POST** for generation Article with logged User
 ```
-curl -X POST \
+curl -k -X POST \
   https://localhost:8443/articles \
   -H 'Accept: */*' \
   -H 'Accept-Encoding: gzip, deflate' \
@@ -59,7 +59,7 @@ curl -X POST \
 ```
 * Example **POST** for generation Comments without logged User
 ```
-curl -X POST \
+curl -k -X POST \
   https://localhost:8443/articles/1/comment \
   -H 'Accept: */*' \
   -H 'Accept-Encoding: gzip, deflate' \
@@ -76,7 +76,7 @@ curl -X POST \
 ```
 * Example **POST** for generation Comments with swearing and not getting published
 ```
-curl -X POST \
+curl -k -X POST \
   https://localhost:8443/articles/1/comment \
   -H 'Accept: */*' \
   -H 'Accept-Encoding: gzip, deflate' \
@@ -93,7 +93,7 @@ curl -X POST \
 ```
 * Example **POST** without logged user and Return of Forbidden
 ```
-curl -X POST \
+curl -k -X POST \
   https://localhost:8443/articles \
   -H 'Accept: */*' \
   -H 'Accept-Encoding: gzip, deflate' \
@@ -113,14 +113,14 @@ curl -X POST \
 ```
 * Example **GET** for receiving all generated Articles in DB
 ```
-curl -X GET \
+curl -k -X GET \
   https://localhost:8443/articles \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache'
 ```
 * Example **GET** for receiving a specific Article in DB
 ```
-curl -X GET \
+curl -k -X GET \
   https://localhost:8443/articles/1 \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache'
