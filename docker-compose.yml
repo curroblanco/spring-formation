@@ -1,4 +1,4 @@
-version: '3.7'
+version: '2.1'
 
 services:
   blog:
@@ -11,6 +11,9 @@ services:
       SWEARING_MICROSERVICE_URL: swearing:8081
     ports:
       - "8443:8443"
+    depends_on:
+      db:
+        condition: service_healthy
 
   swearing:
     image: swearing
@@ -27,3 +30,7 @@ services:
       MYSQL_DATABASE: blog
       MYSQL_USER: admin_blog
       MYSQL_PASSWORD: admin_blog
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
