@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swearing
+spec:
+  selector:
+    matchLabels:
+      app: swearing
+  template:
+    metadata:
+      labels:
+        app: swearing
+    spec:
+      containers:
+      - name: swearing
+        image: fmblancokairos/swearing
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: swearing
+spec:
+  ports:
+  - port: 8081
+  selector:
+    app: swearing
+  type: ClusterIP

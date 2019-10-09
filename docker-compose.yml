@@ -16,8 +16,7 @@ services:
         condition: service_healthy
 
   swearing:
-    image: swearing
-    build: ./swearing-microservice
+    image: fmblancokairos/swearing
 
   db:
     image: mysql

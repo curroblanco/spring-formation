@@ -15,9 +15,9 @@ Also it has to be published in Docker Hub and easily deployed using Docker-Compo
 
 * While using Docker-Compose tool, only need to use command ``docker-compose build`` and afterwards ``docker-compose up`` on directory. The application will be exposed on **localhost** on port **8443**.
 
-* While using Minikube tool from Kubernetes, run command ``jajajaja``
+* While using Minikube tool from Kubernetes, run commands ``jajajaja``
 
-## Examples
+## CURL Examples
 * Example JWT generation for user already in DB **admin**
 
 ```
