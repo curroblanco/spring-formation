@@ -85,7 +85,7 @@ public class ArticleServiceImplTest {
     @Test
     public void shouldReturnArticleWithComment() throws MessageContainsSwearingException {
         when(articleRepository.findById(anyLong())).thenReturn(Optional.of(dumpArticle()));
-        when(swearingService.evaluateComment(anyString())).thenReturn(Boolean.FALSE);
+        when(swearingService.evaluateComment(any())).thenReturn(Boolean.FALSE);
         when(commentTransformer.fromDtoToEntity(any())).thenReturn(new Comment());
         when(articleTransformer.fromEntityToDto(any())).thenReturn(dumpArticleDto());
 
@@ -99,7 +99,7 @@ public class ArticleServiceImplTest {
     @Test(expected = MessageContainsSwearingException.class)
     public void shouldReturnException() throws MessageContainsSwearingException {
         when(articleRepository.findById(anyLong())).thenReturn(Optional.of(dumpArticle()));
-        when(swearingService.evaluateComment(anyString())).thenReturn(Boolean.TRUE);
+        when(swearingService.evaluateComment(any())).thenReturn(Boolean.TRUE);
         when(commentTransformer.fromDtoToEntity(any())).thenReturn(new Comment());
         when(articleTransformer.fromEntityToDto(any())).thenReturn(dumpArticleDto());
 

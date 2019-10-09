@@ -1,14 +1,18 @@
 package es.urjc.code.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.tomakehurst.wiremock.client.WireMock;
 import es.urjc.code.dto.ArticleDto;
+import es.urjc.code.dto.CommentDto;
 import es.urjc.code.entity.Article;
 import es.urjc.code.repository.ArticleRepository;
+import es.urjc.code.service.SwearingService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
@@ -16,6 +20,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -23,10 +29,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
+@AutoConfigureWireMock(port = 8081)
 public class ArticleControllerTest {
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @Autowired
+    private SwearingService swearingService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -37,7 +47,7 @@ public class ArticleControllerTest {
 
         final ResultActions result = mockMvc.perform(
                 get("/articles")
-                .accept(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
         );
 
         result.andExpect(status().isOk());
@@ -91,6 +101,29 @@ public class ArticleControllerTest {
 
         result.andExpect(status().isCreated());
         result.andExpect(content().string("1"));
+    }
+
+    @Test
+    public void shouldReturn201AndArticleComment() throws Exception {
+        articleRepository.save(dumpArticle());
+
+        CommentDto commentDto = dumpCommentDto();
+
+        stubFor(WireMock.post(WireMock.urlEqualTo("/evaluate"))
+                .willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON.toString())
+                        .withBody(Boolean.FALSE.toString())));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        final ResultActions result = mockMvc.perform(
+                post("/articles/1/comment")
+                        .content(objectMapper.writeValueAsString(commentDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        result.andExpect(status().isCreated());
+        result.andExpect(jsonPath("$.comments.[0].author").value(commentDto.getAuthor()));
+        result.andExpect(jsonPath("$.comments.[0].message").value(commentDto.getMessage()));
     }
 
     @WithMockUser(value = "admin")
@@ -152,6 +185,14 @@ public class ArticleControllerTest {
                 .text("Test Text")
                 .title("Test Title")
                 .id(1L)
+                .build();
+    }
+
+    private CommentDto dumpCommentDto() {
+
+        return CommentDto.builder()
+                .message("Test Message")
+                .author("Test Author")
                 .build();
     }
 
