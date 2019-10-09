@@ -32,4 +32,15 @@ public class ArticleTransformer implements Transformer<Article, ArticleDto> {
                 .id(article.getId())
                 .build();
     }
+
+    public ArticleDto fromEntityToDtoWithoutComments(Article article) {
+        return ArticleDto.builder()
+                .authorName(article.getAuthorName())
+                .authorNick(article.getAuthorNick())
+                .summary(article.getSummary())
+                .text(article.getText())
+                .title(article.getTitle())
+                .id(article.getId())
+                .build();
+    }
 }

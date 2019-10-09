@@ -1,5 +1,6 @@
 package es.urjc.code.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import es.urjc.code.entity.Comment;
 import lombok.Builder;
 import lombok.Data;
@@ -16,5 +17,7 @@ public class ArticleDto {
     private String title;
     private String summary;
     private String text;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Comment> comments;
 }

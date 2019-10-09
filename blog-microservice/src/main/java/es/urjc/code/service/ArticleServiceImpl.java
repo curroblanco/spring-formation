@@ -43,7 +43,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         return articleRepository.findAll()
                 .stream()
-                .map(articleTransformer::fromEntityToDto)
+                .map(articleTransformer::fromEntityToDtoWithoutComments)
                 .collect(Collectors.toList());
     }
 
