@@ -18,7 +18,7 @@ In addition, Unit tests and Integration tests were added for basic functionality
 
 * While using Minikube tool from Kubernetes, run command ``kubectl create -f kubernetes/db.yml && kubectl create -f kubernetes/swearing.yml && kubectl create -f kubernetes/blog.yml`` on root directory.
 
-Afterwards, proceed to see which IP and PORT are used to expose the service using ``minikube service blog``.
+Afterwards, proceed to see which IP and PORT are used to expose the service using ``minikube service blog``, by default the PORT will be *30000*.
 
 ## CURL Examples
 
