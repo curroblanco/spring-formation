@@ -6,18 +6,24 @@ Final project for Generation KUP formation regarding Java 8 and Microservice Arc
 
 The project consists on creating a Blog REST-API in which any registered user on the APP could send a new Article and even non-registered user can write new Comments on articles.
 
-Comments must be checked on a secondary API 
+Comments must be checked on a secondary API which will return a 400 HTTP Status in case of a swearing word found inside the comment.
 
 Also it has to be published in Docker Hub and easily deployed using Docker-Compose commands or Kubernetes Minikube.
 
+In addition, Unit tests and Integration tests were added for basic functionality. Not including the testing for User creation.
 
 ## Instructions
 
-* While using Docker-Compose tool, only need to use command ``docker-compose build`` and afterwards ``docker-compose up`` on directory. The application will be exposed on **localhost** on port **8443**.
+* While using Docker-Compose tool, only need to use command ``docker-compose build`` and afterwards ``docker-compose up`` on root directory. The application will be exposed on **localhost** on port **8443**.
 
-* While using Minikube tool from Kubernetes, run commands ``jajajaja``
+* While using Minikube tool from Kubernetes, run command ``kubectl create -f kubernetes/db.yml && kubectl create -f kubernetes/swearing.yml && kubectl create -f kubernetes/blog.yml`` on root directory.
+
+Afterwards, proceed to see which IP and PORT are used to expose the service using ``minikube service blog``.
 
 ## CURL Examples
+
+Examples of API usage with cURL. Please remind that using Minikube as a deploy tool would result on the generation a different **IP** and **PORT**.
+
 * Example JWT generation for user already in DB **admin**
 
 ```
@@ -42,7 +48,7 @@ curl -k -X POST \
   https://localhost:8443/articles \
   -H 'Accept: */*' \
   -H 'Accept-Encoding: gzip, deflate' \
-  -H 'Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE1NzA0NDMzOTQsImlzcyI6IkJsb2cgTWljcm9zZXJ2aWNlIiwic3ViIjoiYWRtaW4iLCJleHAiOjE1NzEzMDczOTR9.RxwcfAEs621inJjkhnxJx4QNeUAyHDqI0c2N1aQV8pinEMKlkxzxcs85ktDZq1Ia1s0r9OU0gx4zpogEpdvEAQ' \
+  -H 'Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE1NzA2OTI1ODcsImlzcyI6IkJsb2cgTWljcm9zZXJ2aWNlIiwic3ViIjoiYWRtaW4iLCJleHAiOjE1NzE1NTY1ODd9.wdSIlwtud6dcD3qxFtiu4k2vodkizPw2K_RrUz8BOW9cFwuJ5SF3kmASZ3dghAJkz-niFWReMalvHFtEj9iNzQ' \
   -H 'Cache-Control: no-cache' \
   -H 'Connection: keep-alive' \
   -H 'Content-Length: 103' \
